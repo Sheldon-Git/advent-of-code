@@ -46,7 +46,11 @@ public class CoordinateSystem {
 			// just don't change the current state
 			return;
 		}
-		setStateAt(x, y, updateState);
+		if (currentState == State.S0) {
+			setStateAt(x, y, updateState);
+		} else {
+			setStateAt(x, y, State.SN);
+		}
 	}
 
 	private void validateCoordinates(int x, int y) {
@@ -61,7 +65,11 @@ public class CoordinateSystem {
 	public void print() {
 		for (int y = max; y >= -max; y--) {
 			for (int x = -max; x <= max; x++) {
-				System.out.print(getStateAt(x, y) + " ");
+				if (x == 0 && y == 0) {
+					System.out.print("ZZ ");
+				} else {
+					System.out.print(getStateAt(x, y) + " ");
+				}
 			}
 			System.out.println();
 		}
