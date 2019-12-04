@@ -1,7 +1,5 @@
 package data;
 
-import java.util.Arrays;
-
 public class CoordinateSystem {
 
 	private final int max;
@@ -24,24 +22,41 @@ public class CoordinateSystem {
 	private void print() {
 		for (int y = max; y >= -max; y--) {
 			for (int x = -max; x <= max; x++) {
-				System.out.print(getValueAt(x, y) + " ");
+				System.out.print(getStateAt(x, y) + " ");
 			}
 			System.out.println();
 		}
 	}
 
-	private State getValueAt(int x, int y) {
+	private State getStateAt(int x, int y) {
 		validateCoordinates(x, y);
 		int j = x + max;
 		int k = y + max;
 		return data[j][k];
 	}
 
-	private void setValueAt(int x, int y, State state) {
+	private void setStateAt(int x, int y, State state) {
 		validateCoordinates(x, y);
 		int j = x + max;
 		int k = y + max;
 		data[j][k] = state;
+	}
+
+	private void updateStateAt(int x, int y, State updateState) {
+		if (updateState == State.S0 || updateState == State.SN) {
+			throw new IllegalArgumentException("invalid update state: " + updateState);
+		}
+		validateCoordinates(x, y);
+		final int j = x + max;
+		final int k = y + max;
+		final State currentState = data[j][k];
+		if (currentState == State.SN) {
+			throw new IllegalStateException("current state is already " + currentState);
+		}
+		if (currentState == updateState) {
+			throw new IllegalStateException(currentState + " == " + updateState);
+		}
+		data[j][k] = updateState;
 	}
 
 	private void validateCoordinates(int x, int y) {
