@@ -19,16 +19,7 @@ public class CoordinateSystem {
 		}
 	}
 
-	private void print() {
-		for (int y = max; y >= -max; y--) {
-			for (int x = -max; x <= max; x++) {
-				System.out.print(getStateAt(x, y) + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	private State getStateAt(int x, int y) {
+	public State getStateAt(int x, int y) {
 		validateCoordinates(x, y);
 		int j = x + max;
 		int k = y + max;
@@ -42,21 +33,18 @@ public class CoordinateSystem {
 		data[j][k] = state;
 	}
 
-	private void updateStateAt(int x, int y, State updateState) {
+	public void updateStateAt(int x, int y, State updateState) {
 		if (updateState == State.S0 || updateState == State.SN) {
 			throw new IllegalArgumentException("invalid update state: " + updateState);
 		}
-		validateCoordinates(x, y);
-		final int j = x + max;
-		final int k = y + max;
-		final State currentState = data[j][k];
+		final State currentState = getStateAt(x, y);
 		if (currentState == State.SN) {
 			throw new IllegalStateException("current state is already " + currentState);
 		}
 		if (currentState == updateState) {
 			throw new IllegalStateException(currentState + " == " + updateState);
 		}
-		data[j][k] = updateState;
+		setStateAt(x, y, updateState);
 	}
 
 	private void validateCoordinates(int x, int y) {
@@ -65,6 +53,15 @@ public class CoordinateSystem {
 		}
 		if (y > max | y < -max) {
 			throw new IllegalArgumentException("invalid y: " + y);
+		}
+	}
+
+	public void print() {
+		for (int y = max; y >= -max; y--) {
+			for (int x = -max; x <= max; x++) {
+				System.out.print(getStateAt(x, y) + " ");
+			}
+			System.out.println();
 		}
 	}
 
