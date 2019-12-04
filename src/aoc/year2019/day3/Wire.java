@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 
 public class Wire {
 
-	private final List<Vector> path;
+	public List<Vector> path;
+
 	private final Consumer<String> feedConsumer;
 
 	public Wire() {
@@ -24,7 +25,7 @@ public class Wire {
 		feedConsumer = new Consumer<String>() {
 			@Override
 			public void accept(String s) {
-				path.add(new Vector(s));
+				getPath().add(new Vector(s));
 			}
 		};
 	}
@@ -48,7 +49,11 @@ public class Wire {
 
 	@Override
 	public String toString() {
-		return path.toString();
+		return getPath().toString();
+	}
+
+	public List<Vector> getPath() {
+		return path;
 	}
 
 }
