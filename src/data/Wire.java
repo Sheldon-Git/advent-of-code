@@ -11,12 +11,13 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class Wire {
 
-	public List<Vector> path;
+	private List<Vector> path;
 
 	private final Consumer<String> feedConsumer;
 
@@ -38,13 +39,19 @@ public class Wire {
 				BufferedReader bufferedReader = new BufferedReader(reader);) {
 			bufferedReader.lines().forEach(result.feedConsumer);
 		}
+		result.writeLock();
 		return result;
 	}
 
 	public static Wire createFrom(String input) {
 		Wire result = new Wire();
 		Arrays.asList(input.split(",")).stream().forEach(result.feedConsumer);
+		result.writeLock();
 		return result;
+	}
+
+	private void writeLock() {
+		path = Collections.unmodifiableList(path);
 	}
 
 	@Override
