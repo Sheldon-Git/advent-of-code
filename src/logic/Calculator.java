@@ -18,9 +18,8 @@ public class Calculator {
 		Calculator calc = new Calculator();
 		calc.applyWire(wire1, State.S1);
 		calc.applyWire(wire2, State.S2);
-		calc.cs.print();
-		// TODO Auto-generated method stub
-		return 0;
+		// calc.cs.print();
+		return 0;  // FIXME implement this
 	}
 
 	private void applyWire(Wire wire, State updateState) {
@@ -45,7 +44,6 @@ public class Calculator {
 				x -= vector.length;
 				break;
 			}
-			// System.out.println(v + " -> [" + x + "," + y + "]");
 		}
 	}
 
