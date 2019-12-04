@@ -1,6 +1,7 @@
 package aoc.year2019.day3;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -27,14 +29,20 @@ public class Wire {
 		};
 	}
 
-	public static Wire createFrom(String filename) throws IOException {
+	public static Wire createFrom(File input) throws IOException {
 		Wire result = new Wire();
-		try (InputStream inputStream = new FileInputStream(filename);
+		try (InputStream inputStream = new FileInputStream(input);
 				ReadableByteChannel channel = Channels.newChannel(inputStream);
 				Reader reader = Channels.newReader(channel, StandardCharsets.UTF_8);
 				BufferedReader bufferedReader = new BufferedReader(reader);) {
 			bufferedReader.lines().forEach(result.feedConsumer);
 		}
+		return result;
+	}
+
+	public static Wire createFrom(String input) {
+		Wire result = new Wire();
+		Arrays.asList(input.split(",")).stream().forEach(result.feedConsumer);
 		return result;
 	}
 
