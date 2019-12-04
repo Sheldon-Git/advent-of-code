@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import data.Wire;
+import logic.Calculator;
 
 public class Puzzle1 {
 

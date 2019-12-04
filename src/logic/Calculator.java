@@ -1,4 +1,4 @@
-package aoc.year2019.day3;
+package logic;
 
 import data.Wire;
 
