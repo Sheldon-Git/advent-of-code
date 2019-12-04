@@ -1,5 +1,7 @@
 package aoc.year2019.day3;
 
+import data.Wire;
+
 public class Calculator {
 
 	public static int closestDistance(Wire wire1, Wire wire2) {

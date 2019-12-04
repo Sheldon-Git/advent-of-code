@@ -3,6 +3,8 @@ package aoc.year2019.day3;
 import java.io.File;
 import java.io.IOException;
 
+import data.Wire;
+
 public class Puzzle1 {
 
 	public static void main(String[] args) throws Exception {
