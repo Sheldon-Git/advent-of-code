@@ -1,0 +1,46 @@
+package aoc.year2019.day3;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class Wire {
+
+	private final List<Vector> path;
+	private final Consumer<String> feedConsumer;
+
+	public Wire() {
+		path = new ArrayList<>();
+		feedConsumer = new Consumer<String>() {
+			@Override
+			public void accept(String s) {
+				path.add(new Vector(s));
+			}
+		};
+	}
+
+	public static Wire createFrom(String filename) throws IOException {
+		Wire result = new Wire();
+		try (InputStream inputStream = new FileInputStream(filename);
+				ReadableByteChannel channel = Channels.newChannel(inputStream);
+				Reader reader = Channels.newReader(channel, StandardCharsets.UTF_8);
+				BufferedReader bufferedReader = new BufferedReader(reader);) {
+			bufferedReader.lines().forEach(result.feedConsumer);
+		}
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return path.toString();
+	}
+
+}
