@@ -1,58 +1,83 @@
 package logic;
 
 import data.CoordinateSystem;
+import data.State;
 import data.Vector;
 import data.Wire;
 
 public class Calculator {
 
-	public static int closestDistance(Wire wire1, Wire wire2) {
+	final CoordinateSystem cs;
+
+	public Calculator() {
 		// TODO determine CoordinateSystem constructor argument automatically by lengths of wires
-		CoordinateSystem cs = new CoordinateSystem(10000);
-		int x = 0;
-		int y = 0;
-		for (Vector v : wire1.getPath()) {
-			switch (v.direction) {
-			case UP:
-				applyVector(v, x, y, x, y + v.length);
-				y += v.length;
-				break;
-			case RIGHT:
-				applyVector(v, x, y, x + v.length, y);
-				x += v.length;
-				break;
-			case DOWN:
-				applyVector(v, x, y, x, y - v.length);
-				y -= v.length;
-				break;
-			case LEFT:
-				applyVector(v, x, y, x - v.length, y);
-				x -= v.length;
-				break;
-			}
-			System.out.println(v + " -> [" + x + "," + y + "]");
-			if (x < 0) {
-				throw new RuntimeException("x < 0");
-			}
-			if (y < 0) {
-				throw new RuntimeException("y < 0");
-			}
-		}
+		cs = new CoordinateSystem(20);
+	}
+
+	public static int closestDistance(Wire wire1, Wire wire2) {
+		Calculator calc = new Calculator();
+		calc.applyWire(wire1, State.S1);
+		calc.applyWire(wire2, State.S2);
+		calc.cs.print();
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	private static void applyVector(Vector v, final int x1, final int y1, final int x2, final int y2) {
+	private void applyWire(Wire wire, State updateState) {
+		int x = 0;
+		int y = 0;
+		for (Vector vector : wire.getPath()) {
+			switch (vector.direction) {
+			case UP:
+				applyVector(x, y + 1, x, y + vector.length, updateState);
+				y += vector.length;
+				break;
+			case RIGHT:
+				applyVector(x + 1, y, x + vector.length, y, updateState);
+				x += vector.length;
+				break;
+			case DOWN:
+				applyVector(x, y - 1, x, y - vector.length, updateState);
+				y -= vector.length;
+				break;
+			case LEFT:
+				applyVector(x - 1, y, x - vector.length, y, updateState);
+				x -= vector.length;
+				break;
+			}
+			// System.out.println(v + " -> [" + x + "," + y + "]");
+		}
+	}
+
+	private void applyVector(final int x1, final int y1, final int x2, final int y2, State updateState) {
 		if (x1 != x2 && y1 != y2) {
 			throw new IllegalStateException("x1=" + x1 + ";y1=" + y1 + ";x2=" + x2 + ";y2=" + y2);
 		}
 		if (x1 == x2) {
+			final int x = x1;
 			if (y1 < y2) {
+				for (int y = y1; y <= y2; y++) {
+					cs.updateStateAt(x, y, updateState);
+				}
 			}
-			if (y2 < y1) {
+			if (y1 > y2) {
+				for (int y = y1; y >= y2; y--) {
+					cs.updateStateAt(x, y, updateState);
+				}
 			}
 		}
 		if (y1 == y2) {
+			final int y = y1;
+			if (x1 < x2) {
+				for (int x = x1; x <= x2; x++) {
+					cs.updateStateAt(x, y, updateState);
+				}
+			}
+			if (x1 > x2) {
+				for (int x = x1; x >= x2; x--) {
+					cs.updateStateAt(x, y, updateState);
+				}
+			}
 		}
 	}
 

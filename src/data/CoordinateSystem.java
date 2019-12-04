@@ -34,10 +34,7 @@ public class CoordinateSystem {
 	}
 
 	public void updateStateAt(int x, int y, State updateState) {
-		if (x == 0 && y == 0) {
-			System.out.println("ignoring update at 0/0");
-			return;
-		}
+		System.out.println("updateStateAt[" + x + "," + y + "]");
 		if (updateState == State.S0 || updateState == State.SN) {
 			throw new IllegalArgumentException("invalid update state: " + updateState);
 		}
@@ -45,8 +42,9 @@ public class CoordinateSystem {
 		if (currentState == State.SN) {
 			throw new IllegalStateException("current state is already " + currentState);
 		}
-		if (currentState == updateState) { // TODO maybe allow this and just don't change the current state?
-			throw new IllegalStateException(currentState + " == " + updateState);
+		if (currentState == updateState) {
+			// just don't change the current state
+			return;
 		}
 		setStateAt(x, y, updateState);
 	}
