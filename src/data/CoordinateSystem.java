@@ -34,7 +34,7 @@ public class CoordinateSystem {
 	}
 
 	public void updateStateAt(int x, int y, State updateState) {
-		System.out.println("updateStateAt[" + x + "," + y + "]");
+		// System.out.println("updateStateAt[" + x + "," + y + "]");
 		if (updateState == State.S0 || updateState == State.SN) {
 			throw new IllegalArgumentException("invalid update state: " + updateState);
 		}

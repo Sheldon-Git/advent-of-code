@@ -1,8 +1,6 @@
 package data;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -31,10 +29,9 @@ public class Wire {
 		};
 	}
 
-	public static Wire createFrom(File input) throws IOException {
+	public static Wire createFrom(InputStream input) throws IOException {
 		Wire result = new Wire();
-		try (InputStream inputStream = new FileInputStream(input);
-				ReadableByteChannel channel = Channels.newChannel(inputStream);
+		try (ReadableByteChannel channel = Channels.newChannel(input);
 				Reader reader = Channels.newReader(channel, StandardCharsets.UTF_8);
 				BufferedReader bufferedReader = new BufferedReader(reader);) {
 			bufferedReader.lines().forEach(result.feedConsumer);
