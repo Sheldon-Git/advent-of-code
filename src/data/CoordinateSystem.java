@@ -1,5 +1,8 @@
 package data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CoordinateSystem {
 
 	private final int max;
@@ -73,6 +76,18 @@ public class CoordinateSystem {
 			}
 			System.out.println();
 		}
+	}
+
+	public List<Coordinate> findCoordinatesWith(State state) {
+		List<Coordinate> result = new ArrayList<>();
+		for (int y = max; y >= -max; y--) {
+			for (int x = -max; x <= max; x++) {
+				if (getStateAt(x, y) == state) {
+					result.add(Coordinate.create(x, y));
+				}
+			}
+		}
+		return result;
 	}
 
 }
