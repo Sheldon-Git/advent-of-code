@@ -10,7 +10,7 @@ import logic.CoordinateSystem;
 import logic.State;
 import logic.Wire;
 
-public class Puzzle1 {
+public class Puzzle {
 
 	private static final Comparator<Coordinate> COMPARATOR = new Comparator<Coordinate>() {
 		@Override
@@ -34,7 +34,7 @@ public class Puzzle1 {
 	}
 
 	private static Wire createWire(String name, int number) throws IOException {
-		try (InputStream input = Puzzle1.class.getResource("/" + name + "/" + number + ".wire").openStream();) {
+		try (InputStream input = Puzzle.class.getResource("/" + name + "/" + number + ".wire").openStream();) {
 			return Wire.createFrom(input);
 		}
 	}
