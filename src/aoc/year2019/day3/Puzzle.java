@@ -33,7 +33,8 @@ public class Puzzle {
 		CoordinateSystem cs = new CoordinateSystem();
 		cs.applyWire(wire1, State.S1);
 		cs.applyWire(wire2, State.S2);
-		System.out.println("closestDistance: " + closestDistance(cs));
+		calculateClosestDistance(cs);
+
 	}
 
 	private static Wire createWire(String name, int number) throws IOException {
@@ -42,12 +43,13 @@ public class Puzzle {
 		}
 	}
 
-	private static int closestDistance(CoordinateSystem cs) {
+	private static void calculateClosestDistance(CoordinateSystem cs) {
 		List<Coordinate> preResult = cs.findCoordinatesWith(State.SN);
 		System.out.println("preResult=" + preResult);
 		Coordinate closestPoint = preResult.parallelStream().sorted(COMPARATOR).findFirst().get();
 		System.out.println("closestPoint=" + closestPoint);
-		return closestPoint.getVectorLength();
+		int closestDistance = closestPoint.getVectorLength();
+		System.out.println("closestDistance=" + closestDistance);
 	}
 
 }
