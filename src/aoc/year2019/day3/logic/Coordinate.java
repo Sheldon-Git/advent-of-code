@@ -1,4 +1,4 @@
-package logic;
+package aoc.year2019.day3.logic;
 
 public class Coordinate {
 

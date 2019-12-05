@@ -8,10 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import logic.Coordinate;
-import logic.CoordinateSystem;
-import logic.State;
-import logic.Wire;
+import aoc.year2019.day3.logic.Coordinate;
+import aoc.year2019.day3.logic.CoordinateSystem;
+import aoc.year2019.day3.logic.State;
+import aoc.year2019.day3.logic.Wire;
 
 public class Puzzle {
 
@@ -23,7 +23,7 @@ public class Puzzle {
 	};
 
 	public static void main(String[] args) throws Exception {
-		String name = "example2";
+		String name = "main";
 		Wire wire1 = createWire(name, 1);
 		Wire wire2 = createWire(name, 2);
 

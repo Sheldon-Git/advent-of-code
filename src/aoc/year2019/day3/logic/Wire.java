@@ -1,4 +1,4 @@
-package logic;
+package aoc.year2019.day3.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
