@@ -10,7 +10,8 @@ public class Calculator {
 	final CoordinateSystem cs;
 
 	public Calculator() {
-		// TODO determine CoordinateSystem constructor argument automatically by lengths of wires
+		//  TODO determine CoordinateSystem constructor argument automatically by lengths of wires
+		//  TODO or just use Map instead of array
 		cs = new CoordinateSystem(20);
 	}
 
@@ -19,7 +20,7 @@ public class Calculator {
 		calc.applyWire(wire1, State.S1);
 		calc.applyWire(wire2, State.S2);
 		// calc.cs.print();
-		return 0;  // FIXME implement this
+		return 0; // FIXME implement this
 	}
 
 	private void applyWire(Wire wire, State updateState) {
