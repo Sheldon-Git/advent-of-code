@@ -47,7 +47,7 @@ public class Puzzle {
 			int wire1Length = wireLengths.get(State.S1);
 			int wire2Length = wireLengths.get(State.S2);
 			int wireCombinedLength = wire1Length + wire2Length;
-			System.out.println("intersection " + intersection + " wire lengths: " + wireCombinedLength);
+			System.out.println("intersection " + intersection + " wire length: " + wireCombinedLength);
 			intersectionWireLengths.add(wireCombinedLength);
 		}
 		Collections.sort(intersectionWireLengths);
