@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import logic.Coordinate;
 import logic.CoordinateSystem;
@@ -33,23 +34,33 @@ public class Puzzle {
 		CoordinateSystem cs = new CoordinateSystem();
 		cs.applyWire(wire1, State.S1);
 		cs.applyWire(wire2, State.S2);
-		calculateClosestDistance(cs);
+		calculateClosestIntersection(cs);
+		calculateShortestIntersection(cs);
+	}
 
+	private static void calculateShortestIntersection(CoordinateSystem cs) {
+		for (Coordinate intersection : cs.findCoordinatesWith(State.SN)) {
+			Map<State, Integer> wireLengths = cs.getValueAt(intersection).getLengths();
+			int wire1Length = wireLengths.get(State.S1);
+			int wire2Length = wireLengths.get(State.S2);
+			int wireCombinedLength = wire1Length + wire2Length;
+			System.out.println("intersection " + intersection + " wire length: " + wireCombinedLength);
+		}
+	}
+
+	private static void calculateClosestIntersection(CoordinateSystem cs) {
+		List<Coordinate> intersections = cs.findCoordinatesWith(State.SN);
+		System.out.println("intersections=" + intersections);
+		Coordinate closestIntersections = intersections.parallelStream().sorted(COMPARATOR).findFirst().get();
+		System.out.println("closestIntersections=" + closestIntersections);
+		int closestIntersection = closestIntersections.getVectorLength();
+		System.out.println("closestIntersection=" + closestIntersection);
 	}
 
 	private static Wire createWire(String name, int number) throws IOException {
 		try (InputStream input = Puzzle.class.getResource("/" + name + "/" + number + ".wire").openStream();) {
 			return Wire.createFrom(input);
 		}
-	}
-
-	private static void calculateClosestDistance(CoordinateSystem cs) {
-		List<Coordinate> preResult = cs.findCoordinatesWith(State.SN);
-		System.out.println("preResult=" + preResult);
-		Coordinate closestPoint = preResult.parallelStream().sorted(COMPARATOR).findFirst().get();
-		System.out.println("closestPoint=" + closestPoint);
-		int closestDistance = closestPoint.getVectorLength();
-		System.out.println("closestDistance=" + closestDistance);
 	}
 
 }
