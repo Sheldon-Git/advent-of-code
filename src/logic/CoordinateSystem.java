@@ -76,6 +76,7 @@ public class CoordinateSystem {
 	public void applyWire(Wire wire, State updateState) {
 		int x = 0;
 		int y = 0;
+		int wireLength = 0;
 		for (Vector vector : wire.getPath()) {
 			Coordinate point1;
 			Coordinate point2;
@@ -103,7 +104,8 @@ public class CoordinateSystem {
 			default:
 				throw new IllegalArgumentException("direction not supported: " + vector.direction);
 			}
-			applyVector(point1, point2, vector.length, updateState);
+			applyVector(point1, point2, wireLength, updateState);
+			wireLength += vector.length;
 		}
 	}
 
@@ -115,12 +117,12 @@ public class CoordinateSystem {
 			final int x = point1.x;
 			if (point1.y < point2.y) {
 				for (int y = point1.y; y <= point2.y; y++) {
-					updateStateAt(Coordinate.create(x, y), updateState, length);
+					updateStateAt(Coordinate.create(x, y), updateState, ++length);
 				}
 			}
 			if (point1.y > point2.y) {
 				for (int y = point1.y; y >= point2.y; y--) {
-					updateStateAt(Coordinate.create(x, y), updateState, length);
+					updateStateAt(Coordinate.create(x, y), updateState, ++length);
 				}
 			}
 		}
@@ -128,12 +130,12 @@ public class CoordinateSystem {
 			final int y = point1.y;
 			if (point1.x < point2.x) {
 				for (int x = point1.x; x <= point2.x; x++) {
-					updateStateAt(Coordinate.create(x, y), updateState, length);
+					updateStateAt(Coordinate.create(x, y), updateState, ++length);
 				}
 			}
 			if (point1.x > point2.x) {
 				for (int x = point1.x; x >= point2.x; x--) {
-					updateStateAt(Coordinate.create(x, y), updateState, length);
+					updateStateAt(Coordinate.create(x, y), updateState, ++length);
 				}
 			}
 		}
