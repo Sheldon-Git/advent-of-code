@@ -4,50 +4,46 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class CoordinateSystem {
 
-	private final Map<Integer, Map<Integer, State>> data;
+	private final Map<Integer, Map<Integer, CoordinateValue>> data;
 
 	public CoordinateSystem() {
 		data = new HashMap<>(999);
 	}
 
-	public State getStateAt(int x, int y) {
-		Map<Integer, State> dataX = data.get(x);
-		if (dataX == null) {
-			return State.S0;
-		}
-		State dataY = dataX.get(y);
-		return dataY == null ? State.S0 : dataY;
-	}
-
-	private void setStateAt(int x, int y, State state) {
-		Map<Integer, State> dataX = data.get(x);
+	public CoordinateValue getValueAt(int x, int y) {
+		Map<Integer, CoordinateValue> dataX = data.get(x);
 		if (dataX == null) {
 			dataX = new HashMap<>();
 			data.put(x, dataX);
 		}
-		dataX.put(y, state);
+		CoordinateValue dataY = dataX.get(y);
+		if (dataY == null) {
+			dataY = new CoordinateValue(State.S0);
+			dataX.put(y, dataY);
+		}
+		return dataY;
 	}
 
-	public void updateStateAt(int x, int y, State updateState) {
+	public void updateStateAt(Coordinate point, State updateState, int length) {
 		// System.out.println("updateStateAt[" + x + "," + y + "]");
 		if (updateState == State.S0 || updateState == State.SN) {
 			throw new IllegalArgumentException("invalid update state: " + updateState);
 		}
-		final State currentState = getStateAt(x, y);
-		if (currentState == State.SN) {
-			throw new IllegalStateException("current state is already " + currentState);
+		final CoordinateValue value = getValueAt(point.x, point.y);
+		if (value.getState() == State.SN) {
+			throw new IllegalStateException("current state is already " + value);
 		}
-		if (currentState == updateState) {
-			// just don't change the current state
+		value.addLengthPerState(length, updateState);
+		if (value.getState() == State.S0) {
+			value.setState(updateState);
 			return;
 		}
-		if (currentState == State.S0) {
-			setStateAt(x, y, updateState);
-		} else {
-			setStateAt(x, y, State.SN);
+		if (value.getState() != updateState) {
+			value.setState(State.SN);
 		}
 	}
 
@@ -67,11 +63,10 @@ public class CoordinateSystem {
 
 	public List<Coordinate> findCoordinatesWith(State state) {
 		List<Coordinate> result = new ArrayList<>();
-		for (int x : data.keySet()) {
-			Map<Integer, State> yData = data.get(x);
-			for (int y : yData.keySet()) {
-				if (getStateAt(x, y) == state) {
-					result.add(Coordinate.create(x, y));
+		for (Entry<Integer, Map<Integer, CoordinateValue>> entryX : data.entrySet()) {
+			for (Entry<Integer, CoordinateValue> entryY : entryX.getValue().entrySet()) {
+				if (entryY.getValue().getState() == state) {
+					result.add(Coordinate.create(entryX.getKey(), entryY.getKey()));
 				}
 			}
 		}
@@ -108,11 +103,11 @@ public class CoordinateSystem {
 			default:
 				throw new IllegalArgumentException("direction not supported: " + vector.direction);
 			}
-			applyVector(point1, point2, updateState);
+			applyVector(point1, point2, vector.length, updateState);
 		}
 	}
 
-	private void applyVector(Coordinate point1, Coordinate point2, State updateState) {
+	private void applyVector(Coordinate point1, Coordinate point2, int length, State updateState) {
 		if (point1.x != point2.x && point1.y != point2.y) {
 			throw new IllegalStateException("point1=" + point1 + ";point2=" + point2);
 		}
@@ -120,12 +115,12 @@ public class CoordinateSystem {
 			final int x = point1.x;
 			if (point1.y < point2.y) {
 				for (int y = point1.y; y <= point2.y; y++) {
-					updateStateAt(x, y, updateState);
+					updateStateAt(Coordinate.create(x, y), updateState, length);
 				}
 			}
 			if (point1.y > point2.y) {
 				for (int y = point1.y; y >= point2.y; y--) {
-					updateStateAt(x, y, updateState);
+					updateStateAt(Coordinate.create(x, y), updateState, length);
 				}
 			}
 		}
@@ -133,12 +128,12 @@ public class CoordinateSystem {
 			final int y = point1.y;
 			if (point1.x < point2.x) {
 				for (int x = point1.x; x <= point2.x; x++) {
-					updateStateAt(x, y, updateState);
+					updateStateAt(Coordinate.create(x, y), updateState, length);
 				}
 			}
 			if (point1.x > point2.x) {
 				for (int x = point1.x; x >= point2.x; x--) {
-					updateStateAt(x, y, updateState);
+					updateStateAt(Coordinate.create(x, y), updateState, length);
 				}
 			}
 		}
