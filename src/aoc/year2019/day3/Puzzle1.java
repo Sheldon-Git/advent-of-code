@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.util.Comparator;
 import java.util.List;
 
-import data.Coordinate;
-import data.CoordinateSystem;
-import data.State;
-import data.Wire;
+import logic.Coordinate;
+import logic.CoordinateSystem;
+import logic.State;
+import logic.Wire;
 
 public class Puzzle1 {
 
