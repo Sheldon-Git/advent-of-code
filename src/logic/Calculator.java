@@ -1,5 +1,6 @@
 package logic;
 
+import data.Coordinate;
 import data.CoordinateSystem;
 import data.State;
 import data.Vector;
@@ -10,8 +11,8 @@ public class Calculator {
 	final CoordinateSystem cs;
 
 	public Calculator() {
-		//  TODO determine CoordinateSystem constructor argument automatically by lengths of wires
-		//  TODO or just use Map instead of array
+		// TODO determine CoordinateSystem constructor argument automatically by lengths of wires
+		// TODO or just use Map instead of array
 		cs = new CoordinateSystem(20);
 	}
 
@@ -27,53 +28,62 @@ public class Calculator {
 		int x = 0;
 		int y = 0;
 		for (Vector vector : wire.getPath()) {
+			Coordinate point1;
+			Coordinate point2;
 			switch (vector.direction) {
 			case UP:
-				applyVector(x, y + 1, x, y + vector.length, updateState);
+				point1 = Coordinate.create(x, y + 1);
+				point2 = Coordinate.create(x, y + vector.length);
 				y += vector.length;
 				break;
 			case RIGHT:
-				applyVector(x + 1, y, x + vector.length, y, updateState);
+				point1 = Coordinate.create(x + 1, y);
+				point2 = Coordinate.create(x + vector.length, y);
 				x += vector.length;
 				break;
 			case DOWN:
-				applyVector(x, y - 1, x, y - vector.length, updateState);
+				point1 = Coordinate.create(x, y - 1);
+				point2 = Coordinate.create(x, y - vector.length);
 				y -= vector.length;
 				break;
 			case LEFT:
-				applyVector(x - 1, y, x - vector.length, y, updateState);
+				point1 = Coordinate.create(x - 1, y);
+				point2 = Coordinate.create(x - vector.length, y);
 				x -= vector.length;
 				break;
+			default:
+				throw new IllegalArgumentException("direction not supported: " + vector.direction);
 			}
+			applyVector(point1, point2, updateState);
 		}
 	}
 
-	private void applyVector(final int x1, final int y1, final int x2, final int y2, State updateState) {
-		if (x1 != x2 && y1 != y2) {
-			throw new IllegalStateException("x1=" + x1 + ";y1=" + y1 + ";x2=" + x2 + ";y2=" + y2);
+	private void applyVector(Coordinate point1, Coordinate point2, State updateState) {
+		if (point1.x != point2.x && point1.y != point2.y) {
+			throw new IllegalStateException("point1=" + point1 + ";point2=" + point2);
 		}
-		if (x1 == x2) {
-			final int x = x1;
-			if (y1 < y2) {
-				for (int y = y1; y <= y2; y++) {
+		if (point1.x == point2.x) {
+			final int x = point1.x;
+			if (point1.y < point2.y) {
+				for (int y = point1.y; y <= point2.y; y++) {
 					cs.updateStateAt(x, y, updateState);
 				}
 			}
-			if (y1 > y2) {
-				for (int y = y1; y >= y2; y--) {
+			if (point1.y > point2.y) {
+				for (int y = point1.y; y >= point2.y; y--) {
 					cs.updateStateAt(x, y, updateState);
 				}
 			}
 		}
-		if (y1 == y2) {
-			final int y = y1;
-			if (x1 < x2) {
-				for (int x = x1; x <= x2; x++) {
+		if (point1.y == point2.y) {
+			final int y = point1.y;
+			if (point1.x < point2.x) {
+				for (int x = point1.x; x <= point2.x; x++) {
 					cs.updateStateAt(x, y, updateState);
 				}
 			}
-			if (x1 > x2) {
-				for (int x = x1; x >= x2; x--) {
+			if (point1.x > point2.x) {
+				for (int x = point1.x; x >= point2.x; x--) {
 					cs.updateStateAt(x, y, updateState);
 				}
 			}

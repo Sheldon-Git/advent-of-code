@@ -30,14 +30,11 @@ public class Wire {
 	}
 
 	public static Wire createFrom(InputStream input) throws IOException {
-		Wire result = new Wire();
 		try (ReadableByteChannel channel = Channels.newChannel(input);
 				Reader reader = Channels.newReader(channel, StandardCharsets.UTF_8);
 				BufferedReader bufferedReader = new BufferedReader(reader);) {
-			bufferedReader.lines().forEach(result.feedConsumer);
+			return createFrom(bufferedReader.readLine());
 		}
-		result.writeLock();
-		return result;
 	}
 
 	public static Wire createFrom(String input) {
