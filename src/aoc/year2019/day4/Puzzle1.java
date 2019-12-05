@@ -1,18 +1,21 @@
 package aoc.year2019.day4;
 
-public class Puzzle {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Puzzle1 {
 
 	private static final int MIN = 234208;
 	private static final int MAX = 765869;
 
 	public static void main(String[] args) {
-		System.out.println("begin");
+		List<Integer> result = new ArrayList<>();
 		for (int i = MIN; i <= MAX; i++) {
 			if (isValid(i)) {
-				System.out.println(i);
+				result.add(i);
 			}
 		}
-		System.out.println("end");
+		System.out.println(result.size());
 	}
 
 	private static boolean isValid(final int number) {
