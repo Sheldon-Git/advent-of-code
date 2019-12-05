@@ -14,16 +14,16 @@ public class CoordinateSystem {
 		data = new HashMap<>(999);
 	}
 
-	public CoordinateValue getValueAt(int x, int y) {
-		Map<Integer, CoordinateValue> dataX = data.get(x);
+	public CoordinateValue getValueAt(Coordinate point) {
+		Map<Integer, CoordinateValue> dataX = data.get(point.x);
 		if (dataX == null) {
 			dataX = new HashMap<>();
-			data.put(x, dataX);
+			data.put(point.x, dataX);
 		}
-		CoordinateValue dataY = dataX.get(y);
+		CoordinateValue dataY = dataX.get(point.y);
 		if (dataY == null) {
 			dataY = new CoordinateValue(State.S0);
-			dataX.put(y, dataY);
+			dataX.put(point.y, dataY);
 		}
 		return dataY;
 	}
@@ -33,7 +33,7 @@ public class CoordinateSystem {
 		if (updateState == State.S0 || updateState == State.SN) {
 			throw new IllegalArgumentException("invalid update state: " + updateState);
 		}
-		final CoordinateValue value = getValueAt(point.x, point.y);
+		final CoordinateValue value = getValueAt(point);
 		if (value.getState() == State.SN) {
 			throw new IllegalStateException("current state is already " + value);
 		}
