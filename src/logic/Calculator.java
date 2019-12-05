@@ -18,9 +18,7 @@ public class Calculator {
 	};
 
 	public static int closestDistance(Wire wire1, Wire wire2) {
-		// TODO determine CoordinateSystem constructor argument automatically by lengths of wires
-		// TODO or just use Map instead of array
-		CoordinateSystem cs = new CoordinateSystem(20);
+		CoordinateSystem cs = new CoordinateSystem();
 		cs.applyWire(wire1, State.S1);
 		cs.applyWire(wire2, State.S2);
 		// calc.cs.print();
