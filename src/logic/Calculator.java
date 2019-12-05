@@ -1,5 +1,8 @@
 package logic;
 
+import java.util.Comparator;
+import java.util.List;
+
 import data.Coordinate;
 import data.CoordinateSystem;
 import data.State;
@@ -8,7 +11,14 @@ import data.Wire;
 
 public class Calculator {
 
-	final CoordinateSystem cs;
+	private static final Comparator<Coordinate> COMPARATOR = new Comparator<Coordinate>() {
+		@Override
+		public int compare(Coordinate o1, Coordinate o2) {
+			return Integer.compare(o1.getVectorLength(), o2.getVectorLength());
+		}
+	};
+
+	private final CoordinateSystem cs;
 
 	public Calculator() {
 		// TODO determine CoordinateSystem constructor argument automatically by lengths of wires
@@ -21,7 +31,12 @@ public class Calculator {
 		calc.applyWire(wire1, State.S1);
 		calc.applyWire(wire2, State.S2);
 		// calc.cs.print();
-		return 0; // FIXME implement this
+
+		List<Coordinate> preResult = calc.cs.findCoordinatesWith(State.SN);
+		System.out.println("preResult=" + preResult);
+		Coordinate closestPoint = preResult.parallelStream().sorted(COMPARATOR).findFirst().get();
+		System.out.println("closestPoint=" + closestPoint);
+		return closestPoint.getVectorLength();
 	}
 
 	private void applyWire(Wire wire, State updateState) {

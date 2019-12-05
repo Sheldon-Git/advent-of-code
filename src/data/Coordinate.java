@@ -14,6 +14,10 @@ public class Coordinate {
 		return new Coordinate(x, y);
 	}
 
+	public int getVectorLength() {
+		return Math.abs(x) + Math.abs(y);
+	}
+
 	@Override
 	public String toString() {
 		return "[" + x + "," + y + "]";
