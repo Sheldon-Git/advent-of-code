@@ -27,7 +27,20 @@ public class Puzzle2 {
 	}
 
 	private static boolean hasExactly2SameAdjacentDigits(final int number) {
-		// TODO implement and test
+    ArrayList<Integer> group = new ArrayList<>();
+    int currentNumber = number;
+    do {
+      int digit = currentNumber % 10 ;
+      if (!group.isEmpty() && group.get(0).intValue() != digit) {
+        if (group.size() == 2) {
+          return true;
+        }
+        group.clear();
+      }
+      group.add(digit);
+      currentNumber = currentNumber / 10;
+    } while (currentNumber > 0);
+    return group.size() == 2;
 	}
 
 	private static boolean hasDecreasingDigits(final int number) {
