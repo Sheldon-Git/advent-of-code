@@ -12,15 +12,16 @@ import java.util.List;
 public class Puzzle {
 
 	public static void main(String[] args) throws Exception {
-		List<Integer> program = readProgram("example3");
-		System.out.println("program=" + program);
+		List<Integer> program = readProgram("main");
+		System.out.println("program[begin]: " + program);
 		executeProgram(program);
-		System.out.println("program=" + program);
+		System.out.println("program[end]: " + program);
 	}
 
 	private static void executeProgram(List<Integer> program) {
 		int ip = 0;
 		while (true) {
+			// System.out.println("current program: " + program);
 			ip = executeOperation(ip, program);
 			if (ip < 0) {
 				break;
@@ -79,7 +80,7 @@ public class Puzzle {
 	}
 
 	private static int getArgumentValue1(int ip, List<Integer> program) {
-		int argMode = getArgumentMode1(program.get(0));
+		int argMode = getArgumentMode1(program.get(ip));
 		switch (argMode) {
 		case 0:
 			return program.get(program.get(ip + 1));
@@ -91,7 +92,7 @@ public class Puzzle {
 	}
 
 	private static int getArgumentValue2(int ip, List<Integer> program) {
-		int argMode = getArgumentMode2(program.get(0));
+		int argMode = getArgumentMode2(program.get(ip));
 		switch (argMode) {
 		case 0:
 			return program.get(program.get(ip + 2));
