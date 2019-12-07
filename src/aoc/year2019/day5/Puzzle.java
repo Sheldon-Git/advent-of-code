@@ -29,7 +29,7 @@ public class Puzzle {
 	}
 
 	private static int executeOperation(final int ip, List<Integer> program) {
-		final int opCode = program.get(ip);
+		final int opCode = parseOpCode(ip, program);
 		switch (opCode) {
 		case 99:
 			return -1;
@@ -48,6 +48,14 @@ public class Puzzle {
 		default:
 			throw new IllegalStateException("operation code " + opCode + " is not supported");
 		}
+	}
+
+	private static int parseOpCode(final int ip, List<Integer> program) {
+		int x = program.get(ip);
+		if (x == 99) {
+			return 99;
+		}
+		return x % 10;
 	}
 
 	private static void executeOperationOutput(int ip, List<Integer> program) {
