@@ -71,7 +71,7 @@ public class Puzzle {
 	private static int getArgumentMode2(int instructionHead) {
 		int result = instructionHead;
 		if (result < 1000) {
-			return 1;
+			return 0; // default
 		}
 		result /= 1000;
 		result = result % 10;
