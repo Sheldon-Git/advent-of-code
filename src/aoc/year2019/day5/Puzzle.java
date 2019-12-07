@@ -57,13 +57,11 @@ public class Puzzle {
 	}
 
 	private static void writeValue(int value) {
-		// TODO adjust
 		System.out.println("print " + value);
 	}
 
 	private static int readValue() {
-		// TODO adjust
-		return 77;
+		return 1;
 	}
 
 	private static void executeOperationInput(int ip, List<Integer> program) {
