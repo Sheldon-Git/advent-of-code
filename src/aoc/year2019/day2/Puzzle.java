@@ -14,6 +14,35 @@ public class Puzzle {
 	public static void main(String[] args) throws Exception {
 		List<Integer> program = readProgram("example1");
 		System.out.println("program=" + program);
+		System.out.println("begin");
+		executeProgram(program);
+		System.out.println("end");
+	}
+
+	private static void executeProgram(List<Integer> program) {
+		int ip = 0;
+		while (true) {
+			ip = executeOperation(ip, program);
+			if (ip < 0) {
+				break;
+			}
+		}
+	}
+
+	private static int executeOperation(final int ip, List<Integer> program) {
+		final int opCode = program.get(ip);
+		switch (opCode) {
+		case 99:
+			return -1;
+		case 1:
+			// TODO implement
+			return ip + 4;
+		case 2:
+			// TODO implement
+			return ip + 4;
+		default:
+			throw new IllegalStateException("operation code " + opCode + " is not supported");
+		}
 	}
 
 	private static List<Integer> readProgram(String name) throws Exception {
