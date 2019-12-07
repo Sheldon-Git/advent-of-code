@@ -28,8 +28,16 @@ public class Puzzle {
 		}
 	}
 
+	private static int parseOpCode(int instructionHead) {
+		if (instructionHead == 99) {
+			return 99;
+		}
+		return instructionHead % 10;
+	}
+
 	private static int executeOperation(final int ip, List<Integer> program) {
-		final int opCode = parseOpCode(ip, program);
+		final int instructionHead = program.get(ip);
+		final int opCode = parseOpCode(instructionHead);
 		switch (opCode) {
 		case 99:
 			return -1;
@@ -50,31 +58,56 @@ public class Puzzle {
 		}
 	}
 
-	private static int parseOpCode(final int ip, List<Integer> program) {
-		int x = program.get(ip);
-		if (x == 99) {
-			return 99;
+	private static int getArgumentMode1(int instructionHead) {
+		int result = instructionHead;
+		if (result < 100) {
+			return 0; // default
 		}
-		return x % 10;
+		result /= 100;
+		result = result % 10;
+		return result;
 	}
 
-	private static void executeOperationOutput(int ip, List<Integer> program) {
-		int sp = program.get(ip + 1);
-		int value = program.get(sp);
-		writeValue(value);
+	private static int getArgumentMode2(int instructionHead) {
+		int result = instructionHead;
+		if (result < 1000) {
+			return 1;
+		}
+		result /= 1000;
+		result = result % 10;
+		return result;
 	}
 
-	private static void writeValue(int value) {
-		System.out.println("print " + value);
+	private static int getArgumentValue1(int ip, List<Integer> program) {
+		int argMode = getArgumentMode1(program.get(0));
+		switch (argMode) {
+		case 0:
+			return program.get(program.get(ip + 1));
+		case 1:
+			return program.get(ip + 1);
+		default:
+			throw new IllegalStateException("invalid argument mode " + argMode);
+		}
 	}
 
-	private static int readValue() {
-		return 1;
+	private static int getArgumentValue2(int ip, List<Integer> program) {
+		int argMode = getArgumentMode2(program.get(0));
+		switch (argMode) {
+		case 0:
+			return program.get(program.get(ip + 2));
+		case 1:
+			return program.get(ip + 2);
+		default:
+			throw new IllegalStateException("invalid argument mode " + argMode);
+		}
 	}
 
-	private static void executeOperationInput(int ip, List<Integer> program) {
-		int dp = program.get(ip + 1);
-		program.set(dp, readValue());
+	private static void executeOperationAdd(int ip, List<Integer> program) {
+		int arg1 = getArgumentValue1(ip, program);
+		int arg2 = getArgumentValue2(ip, program);
+		int result = arg1 + arg2;
+		int dp = program.get(ip + 3);
+		program.set(dp, result);
 	}
 
 	private static void executeOperationMultiply(int ip, List<Integer> program) {
@@ -85,12 +118,23 @@ public class Puzzle {
 		program.set(dp, result);
 	}
 
-	private static void executeOperationAdd(int ip, List<Integer> program) {
-		int arg1 = program.get(program.get(ip + 1));
-		int arg2 = program.get(program.get(ip + 2));
-		int result = arg1 + arg2;
-		int dp = program.get(ip + 3);
-		program.set(dp, result);
+	private static void executeOperationInput(int ip, List<Integer> program) {
+		int dp = program.get(ip + 1);
+		program.set(dp, readValue());
+	}
+
+	private static void executeOperationOutput(int ip, List<Integer> program) {
+		int sp = program.get(ip + 1);
+		int value = program.get(sp);
+		writeValue(value);
+	}
+
+	private static int readValue() {
+		return 1;
+	}
+
+	private static void writeValue(int value) {
+		System.out.println("print " + value);
 	}
 
 	private static List<Integer> readProgram(String name) throws Exception {
