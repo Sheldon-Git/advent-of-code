@@ -65,7 +65,7 @@ public class Puzzle {
 	}
 
 	private static Wire createWire(String name, int number) throws IOException {
-		try (InputStream input = Puzzle.class.getResource("/" + name + "/" + number + ".wire").openStream();) {
+		try (InputStream input = Puzzle.class.getResource("/day3/" + name + "/" + number + ".wire").openStream();) {
 			return Wire.createFrom(input);
 		}
 	}
