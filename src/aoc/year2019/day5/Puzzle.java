@@ -119,12 +119,12 @@ public class Puzzle {
 	}
 
 	private static void executeOperationInput(int ip, List<Integer> program) {
-		int dp = program.get(ip + 1);
+		int dp = getArgumentValue1(ip, program);
 		program.set(dp, readValue());
 	}
 
 	private static void executeOperationOutput(int ip, List<Integer> program) {
-		int sp = program.get(ip + 1);
+		int sp = getArgumentValue1(ip, program);
 		int value = program.get(sp);
 		writeValue(value);
 	}
