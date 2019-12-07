@@ -21,7 +21,6 @@ public class Puzzle {
 	private static void executeProgram(List<Integer> program) {
 		int ip = 0;
 		while (true) {
-			// System.out.println("current program: " + program);
 			ip = executeOperation(ip, program);
 			if (ip < 0) {
 				break;
@@ -125,9 +124,7 @@ public class Puzzle {
 	}
 
 	private static void executeOperationOutput(int ip, List<Integer> program) {
-		int sp = program.get(ip + 1);
-		int value = program.get(sp);
-		writeValue(value);
+		writeValue(getArgumentValue1(ip, program));
 	}
 
 	private static int readValue() {
