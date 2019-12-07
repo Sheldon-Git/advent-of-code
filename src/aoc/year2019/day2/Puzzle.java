@@ -14,9 +14,8 @@ public class Puzzle {
 	public static void main(String[] args) throws Exception {
 		List<Integer> program = readProgram("example1");
 		System.out.println("program=" + program);
-		System.out.println("begin");
 		executeProgram(program);
-		System.out.println("end");
+		System.out.println("program=" + program);
 	}
 
 	private static void executeProgram(List<Integer> program) {
@@ -35,14 +34,30 @@ public class Puzzle {
 		case 99:
 			return -1;
 		case 1:
-			// TODO implement
+			executeOperation1(ip, program);
 			return ip + 4;
 		case 2:
-			// TODO implement
+			executeOperation2(ip, program);
 			return ip + 4;
 		default:
 			throw new IllegalStateException("operation code " + opCode + " is not supported");
 		}
+	}
+
+	private static void executeOperation1(int ip, List<Integer> program) {
+		int arg1 = program.get(program.get(ip + 1));
+		int arg2 = program.get(program.get(ip + 2));
+		int result = arg1 + arg2;
+		int dp = program.get(ip + 3);
+		program.set(dp, result);
+	}
+
+	private static void executeOperation2(int ip, List<Integer> program) {
+		int arg1 = program.get(program.get(ip + 1));
+		int arg2 = program.get(program.get(ip + 2));
+		int result = arg1 * arg2;
+		int dp = program.get(ip + 3);
+		program.set(dp, result);
 	}
 
 	private static List<Integer> readProgram(String name) throws Exception {
