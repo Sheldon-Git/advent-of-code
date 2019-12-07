@@ -111,8 +111,8 @@ public class Puzzle {
 	}
 
 	private static void executeOperationMultiply(int ip, List<Integer> program) {
-		int arg1 = program.get(program.get(ip + 1));
-		int arg2 = program.get(program.get(ip + 2));
+		int arg1 = getArgumentValue1(ip, program);
+		int arg2 = getArgumentValue2(ip, program);
 		int result = arg1 * arg2;
 		int dp = program.get(ip + 3);
 		program.set(dp, result);
