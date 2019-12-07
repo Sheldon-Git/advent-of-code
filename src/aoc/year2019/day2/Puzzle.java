@@ -12,7 +12,7 @@ import java.util.List;
 public class Puzzle {
 
 	public static void main(String[] args) throws Exception {
-		List<Integer> program = readProgram("example1");
+		List<Integer> program = readProgram("main");
 		System.out.println("program=" + program);
 		executeProgram(program);
 		System.out.println("program=" + program);
